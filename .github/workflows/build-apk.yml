@@ -1,0 +1,29 @@
+name: Build debug APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :smarttubetv:assembleStmobileDebug --no-daemon --max-workers=2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: newtube-debug-apk
+          path: smarttubetv/build/outputs/renamed_apks/stmobileDebug/*.apk
