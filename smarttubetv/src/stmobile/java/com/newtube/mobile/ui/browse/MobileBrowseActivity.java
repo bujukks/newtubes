@@ -70,6 +70,7 @@ import com.newtube.mobile.ui.common.MobileActivity;
 import com.newtube.mobile.ui.common.MobileSnackbar;
 import com.newtube.mobile.ui.common.Motion;
 import com.newtube.mobile.ui.common.ShortsFilter;
+import com.newtube.mobile.ui.common.ShortsPrefs;
 import com.newtube.mobile.ui.common.SkeletonReveal;
 import com.newtube.mobile.ui.update.MobileUpdateActivity;
 import com.newtube.mobile.update.AppUpdates;
@@ -999,8 +1000,8 @@ public class MobileBrowseActivity extends MobileActivity
      * Rebuild the panel's section list, grouped like the official You page: the user's own
      * content first (Playlists, My videos, Channels, ...), then the discovery feeds under an
      * "Explore" label, then Settings behind a divider. Sections shown in the bottom nav (and
-     * Settings/Shorts) are excluded - Settings gets its own trailing row, and NewTube has no
-     * Shorts (see ShortsFilter). Long-press on a section row opens the section-management menu
+        * Settings and Shorts while Show Shorts is off are excluded - Settings gets its own trailing
+        * row. Long-press on a section row opens the section-management menu
      * (the old drawer rows' "..." overflow).
      */
     private void rebuildYouRows() {
@@ -1020,7 +1021,7 @@ public class MobileBrowseActivity extends MobileActivity
             if (!section.isEnabled()
                     || navSections.contains(section)
                     || section.getId() == MediaGroup.TYPE_SETTINGS
-                    || section.getId() == MediaGroup.TYPE_SHORTS) {
+                    || (!ShortsPrefs.showShorts(this) && section.getId() == MediaGroup.TYPE_SHORTS)) {
                 continue;
             }
             // NEWTUBE(menu): channels/playlists pinned from a card menu ("Pin to You") carry the
@@ -2361,8 +2362,9 @@ public class MobileBrowseActivity extends MobileActivity
         // recomputes both hashCodes per comparison). Same answer: Video.equals is "same hashCode
         // and same isMix()", so equal videos always share a bucket.
         java.util.Set<Video> present = new java.util.HashSet<>(mCurrentVideos);
+        boolean showShorts = ShortsPrefs.showShorts(this);
         for (Video video : videos) {
-            if (isVisibleFeedItem(video) && present.add(video)) {
+            if (isVisibleFeedItem(video, showShorts) && present.add(video)) {
                 mCurrentVideos.add(video);
             }
         }
@@ -2372,25 +2374,26 @@ public class MobileBrowseActivity extends MobileActivity
      * Browse sections are video feeds, not discovery results. YouTube occasionally injects a
      * channel-shaped recommendation into Home/Trending; rendering that with the shared search
      * adapter creates an avatar-only row in the middle of otherwise full-thumbnail cards. NewTube
-     * has no Shorts, so none are shown in any section ({@link ShortsFilter}). Keep true playlists
+        * filters Shorts when Show Shorts is off ({@link ShortsFilter}). Keep true playlists
      * (which use a similar service shape), and leave channel discovery to Search.
      */
-    private static List<Video> visibleFeedItems(List<Video> videos) {
+    private List<Video> visibleFeedItems(List<Video> videos) {
         List<Video> visible = new ArrayList<>();
         if (videos == null) {
             return visible;
         }
+        boolean showShorts = ShortsPrefs.showShorts(this);
         for (Video video : videos) {
-            if (isVisibleFeedItem(video)) {
+            if (isVisibleFeedItem(video, showShorts)) {
                 visible.add(video);
             }
         }
         return visible;
     }
 
-    private static boolean isVisibleFeedItem(Video video) {
+    private static boolean isVisibleFeedItem(Video video, boolean showShorts) {
         return video != null
-                && !ShortsFilter.isShort(video)
+                && (showShorts || !ShortsFilter.isShort(video))
                 && (!video.isChannel() || video.isPlaylistAsChannel())
                 && !isSearchQueryTile(video);
     }

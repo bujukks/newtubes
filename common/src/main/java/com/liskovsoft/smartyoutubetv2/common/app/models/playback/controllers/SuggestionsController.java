@@ -1247,9 +1247,9 @@ public class SuggestionsController extends BasePlayerController {
         boolean found = false;
 
         for (Video current : videos) {
-            // NEWTUBE(shorts): the phone has no Shorts - autoplay through a playlist skips them
-            // the way its queue card leaves them out.
-            if (found && current.hasVideo() && !current.isUpcoming && !(PhoneUi.isEnabled() && current.isShorts)) {
+            // NEWTUBE(shorts): skip Shorts in playlist autoplay only while Show Shorts is off.
+            if (found && current.hasVideo() && !current.isUpcoming
+                    && !(PhoneUi.isEnabled() && !PhoneUi.isShowShortsEnabled() && current.isShorts)) {
                 mNextRetryCount = 0;
                 mNextSectionVideo = current;
                 getPlayer().setNextTitle(mNextSectionVideo);

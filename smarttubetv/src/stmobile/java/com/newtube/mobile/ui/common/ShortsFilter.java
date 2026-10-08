@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * NEWTUBE(shorts): NewTube has no Shorts. Every list the phone shows - the feeds, search results,
- * channel pages and their tabs, playlists, Up next - drops them, always; there is no setting (the
- * shared "Hide content" Shorts rows and the Shorts section are not shown on the phone, and nothing
- * here reads their prefs). A Short opened from a shared youtube.com/shorts/ link still plays in the
- * normal player: links are not lists.
+ * NEWTUBE(shorts): every list the phone shows - the feeds, search results, channel pages and their
+ * tabs, playlists, Up next - can drop Shorts according to the phone-only Show Shorts preference.
+ * A Short opened from a shared youtube.com/shorts/ link still plays in the normal player: links are
+ * not lists.
  *
  * <p>A Short is what the item itself says it is ({@link Video#isShorts}: a reel renderer, the Shorts
  * badge or tile style, or a lockup whose tap opens the reel player - see MediaServiceCore's
@@ -25,8 +24,8 @@ public final class ShortsFilter {
     }
 
     /** {@code videos} without its Shorts, in order (the same list when it has none). */
-    public static List<Video> withoutShorts(List<Video> videos) {
-        if (videos == null || !containsShort(videos)) {
+    public static List<Video> withoutShorts(List<Video> videos, boolean showShorts) {
+        if (showShorts || videos == null || !containsShort(videos)) {
             return videos;
         }
         List<Video> result = new ArrayList<>(videos.size());
@@ -44,8 +43,9 @@ public final class ShortsFilter {
      * Shorts (or nothing at all, when the service already emptied it). Any other section keeps its
      * tab and its next page even when its first page filtered down to zero cards.
      */
-    public static boolean isShortsSection(String title, String localizedLabel, List<Video> videos) {
-        if (title == null) {
+    public static boolean isShortsSection(String title, String localizedLabel, List<Video> videos,
+                                          boolean showShorts) {
+        if (showShorts || title == null) {
             return false;
         }
         String name = title.trim();

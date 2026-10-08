@@ -34,6 +34,7 @@ public class ShortsAutoplayTest {
     @After
     public void tearDown() {
         PhoneUi.setEnabled(false);
+        PhoneUi.setShowShortsEnabled(false);
         if (GlobalPreferences.context() != null) {
             BlockedChannelData.instance(GlobalPreferences.context()).clear();
         }
@@ -119,6 +120,20 @@ public class ShortsAutoplayTest {
         phone.videoId = "now";
         phone.sync(metadata);
         assertEquals("long1", phone.nextMediaItem.getVideoId());
+    }
+
+    @Test
+    public void syncKeepsAShortPickWhenShowShortsIsEnabled() {
+        MediaItem shortPick = item("s1", true);
+        MediaItemMetadata metadata = metadata(shortPick, upNext(shortPick, item("long1", false)));
+
+        PhoneUi.setEnabled(true);
+        PhoneUi.setShowShortsEnabled(true);
+        Video phone = new Video();
+        phone.videoId = "now";
+        phone.sync(metadata);
+
+        assertSame(shortPick, phone.nextMediaItem);
     }
 
     private static List<MediaGroup> upNext(MediaItem... items) {

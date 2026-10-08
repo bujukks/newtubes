@@ -114,7 +114,7 @@ final class PhoneOnlyPrefs implements AppPrefs.ProfileChangeListener {
     /**
      * Undoes what turning child mode on did (GeneralSettingsPresenter.enableChildMode), the phone's
      * way: the card menu back to the phone's default, Home back on (the Explore tabs it switched off
-     * stay a choice on the Tabs page; Shorts don't exist on the phone), Up next and autoplay back,
+    * stay a choice on the Tabs page; Shorts visibility follows Show Shorts), Up next and autoplay back,
      * popular searches back.
      */
     private void turnOffChildMode() {

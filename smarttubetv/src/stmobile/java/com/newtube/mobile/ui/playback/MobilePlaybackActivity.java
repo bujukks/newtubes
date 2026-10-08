@@ -7883,6 +7883,7 @@ public class MobilePlaybackActivity extends MobileActivity
         Video current = getVideo();
         String currentId = current != null ? current.videoId : null;
         Integer queueId = findQueueGroupId(current);
+        boolean showShorts = com.newtube.mobile.ui.common.ShortsPrefs.showShorts(this);
 
         for (Map.Entry<Integer, List<Video>> entry : mSuggestionVideos.entrySet()) {
             boolean isQueueRow = queueId != null && queueId.equals(entry.getKey());
@@ -7891,8 +7892,8 @@ public class MobilePlaybackActivity extends MobileActivity
                 continue;
             }
             for (Video v : vids) {
-                if (v == null || com.newtube.mobile.ui.common.ShortsFilter.isShort(v)) {
-                    continue; // NEWTUBE(shorts): neither Up next nor the queue card lists Shorts
+                if (v == null || (!showShorts && com.newtube.mobile.ui.common.ShortsFilter.isShort(v))) {
+                    continue; // NEWTUBE(shorts): neither list Shorts while Show Shorts is off
                 }
                 if (isQueueRow) {
                     mQueueVideos.add(v);

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * NEWTUBE(shorts): the phone has no Shorts, so autoplay must not land on one. When YouTube's own
+ * NEWTUBE(shorts): while Show Shorts is off, autoplay must not land on one. When YouTube's own
  * next pick (the /next autoplay target) is a Short, the next video is the first non-Short of Up next
  * instead - or none, if Up next has no ordinary video to offer. Applied by {@link Video#sync} only
  * when {@code PhoneUi} is on; TV keeps YouTube's pick.

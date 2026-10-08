@@ -29,7 +29,7 @@ Settings
   App
     General                     Theme · Language · Location · Start screen · Interface size ·
                                 Search by voice right away · Use 24-hour time
-    Tabs and feeds              Tabs › · Hidden videos › · Video menu › · Thumbnails ·
+    Tabs and feeds              Show Shorts · Tabs › · Hidden videos › · Video menu › · Thumbnails ·
                                 Original titles · Order of Channels in You
     History and privacy         Watch history · Clear watch history · Don't keep search history ·
                                 Clear search history
@@ -165,8 +165,9 @@ Per-row evidence (what each pref does on the phone, with file:line) is in
   ignores (exit PiP; Open playlist always shows where it applies; Move up follows Move down) or that
   `PhoneOnlyPrefs` keeps off (Open comments, Pause history, and the QR code, Switch account and
   Check for updates above).
-- **Shorts** rows are gone with Shorts (1.12.0); **Hide Mixes** too (its filter only runs on the old v1
-  lists; every phone feed is v2).
+- **Shorts** rows from the TV settings remain gone; the phone has a **Show Shorts** switch in Tabs
+  and feeds. Off by default, it restores Shorts in feeds, search, channels, playlists, Up next and
+  autoplay. **Hide Mixes** is gone too (its filter only runs on the old v1 lists; every phone feed is v2).
 
 Labels: every row has its own phone string in `strings_settings.xml` (English and Spanish). Other
 locales fall back to English until Weblate catches up; the upstream TV strings were not reused

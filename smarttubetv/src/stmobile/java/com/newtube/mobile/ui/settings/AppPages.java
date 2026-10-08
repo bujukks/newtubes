@@ -24,6 +24,7 @@ import com.liskovsoft.smartyoutubetv2.tv.R;
 import com.liskovsoft.youtubeapi.service.internal.MediaServiceData;
 import com.newtube.mobile.CardMenuMigration;
 import com.newtube.mobile.ui.common.MobileSnackbar;
+import com.newtube.mobile.ui.common.ShortsPrefs;
 import com.newtube.mobile.ui.common.ThemeMode;
 
 import java.util.ArrayList;
@@ -88,7 +89,8 @@ final class AppPages {
         for (Map.Entry<Integer, Integer> section : sidebar.getDefaultSections().entrySet()) {
             int sectionId = section.getValue();
             boolean current = sectionId == boot;
-            if (!current && (sectionId == MediaGroup.TYPE_SHORTS || sectionId == MediaGroup.TYPE_SETTINGS
+            if (!current && ((!ShortsPrefs.showShorts(context) && sectionId == MediaGroup.TYPE_SHORTS)
+                    || sectionId == MediaGroup.TYPE_SETTINGS
                     || !sidebar.isSectionPinned(sectionId))) {
                 continue;
             }
@@ -151,6 +153,13 @@ final class AppPages {
     static SettingsPages.Page feeds(Context context) {
         List<SettingsRow> rows = new ArrayList<>();
         MainUIData mainUIData = MainUIData.instance(context);
+
+        rows.add(SettingsRow.toggle(context.getString(R.string.mobile_settings_show_shorts),
+                context.getString(R.string.mobile_settings_show_shorts_summary),
+                () -> ShortsPrefs.showShorts(context), on -> {
+                    ShortsPrefs.setShowShorts(context, on);
+                    BrowsePresenter.instance(context).refresh(false);
+                }));
 
         rows.add(SettingsRow.page(context.getString(R.string.mobile_settings_tabs),
                 () -> context.getString(R.string.mobile_settings_tabs_summary), SettingsPages.FEEDS_TABS));
@@ -242,7 +251,8 @@ final class AppPages {
                                           int[] order, boolean keepOrder) {
         SidebarService sidebar = SidebarService.instance(context);
         for (int sectionId : order) {
-            if (sectionId == MediaGroup.TYPE_SETTINGS || sectionId == MediaGroup.TYPE_SHORTS) {
+            if (sectionId == MediaGroup.TYPE_SETTINGS
+                    || (!ShortsPrefs.showShorts(context) && sectionId == MediaGroup.TYPE_SHORTS)) {
                 continue;
             }
             Integer titleRes = null;

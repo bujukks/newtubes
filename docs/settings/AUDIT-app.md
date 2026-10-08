@@ -49,13 +49,13 @@ On the phone `show()` skips App exit shortcut, Screen dimming and Key remapping 
 
 | Row | Getter/Setter | Default | Phone reader (file:line) | Verdict | What it does (summary text) | Side effects / notes |
 |---|---|---|---|---|---|---|
-| One radio per enabled section ("Home", "Subscriptions", "History", "Downloads", "Live", ...) plus one per pinned channel/playlist (by title). Shorts, Settings and disabled sections are hidden unless they are the current pick (GSP:316) | `SidebarService#getBootSectionId` / `#setBootSectionId` (SS:247/241) | `MediaGroup.TYPE_HOME` (SS:332) | `BP.refreshSections` BP:439 -> `getView().selectSection(mBootSectionIndex)` -> `MBA.selectSection` MBA:2058 (cold start, when no current section exists). Also `BP.prefetchBootSection` BP:1105 (Home is prefetched only when it is the boot section) | LIVE | The tab NewTube opens on. | None. A stored Notifications boot is read as Home (SS:248). Kept in sidebar data, which is always per account (AppPrefs). |
+| One radio per enabled section ("Home", "Subscriptions", "History", "Downloads", "Live", ...) plus one per pinned channel/playlist (by title). Shorts appear only when Show Shorts is on; Settings and disabled sections are hidden unless they are the current pick (GSP:316) | `SidebarService#getBootSectionId` / `#setBootSectionId` (SS:247/241) | `MediaGroup.TYPE_HOME` (SS:332) | `BP.refreshSections` BP:439 -> `getView().selectSection(mBootSectionIndex)` -> `MBA.selectSection` MBA:2058 (cold start, when no current section exists). Also `BP.prefetchBootSection` BP:1105 (Home is prefetched only when it is the boot section) | LIVE | The tab NewTube opens on. | None. A stored Notifications boot is read as Home (SS:248). Kept in sidebar data, which is always per account (AppPrefs). |
 
 ### 1b. "Set-up sections" (checkbox list), GSP:100
 
 | Row | Getter/Setter | Default | Phone reader | Verdict | What it does | Side effects / notes |
 |---|---|---|---|---|---|---|
-| Home, Trending, Kids, Sports, Live, Gaming, News, Music, Channels, Subscriptions, History, Downloads, Blocked Channels, Playlists, My videos, Playback queue (Notifications is removed by `SS.getDefaultSections` on the phone; Shorts by GSP:115; Settings by GSP:109) | `SidebarService#isSectionPinned` / `BrowsePresenter#enableSection` -> `SidebarService#enableSection` (BP:759, SS:94) | All on except Notifications, Playback queue, Trending, Blocked Channels (SS:295-304). Downloads is switched on once for older installs (MMA `downloads_section`) | `BP.initPinnedSections` BP:366 -> `refreshSections` -> `MBA.addSection/removeSection` -> `MBA.rebuildBottomNav` MBA:1617 (Home/Subscriptions/History/Downloads become tabs, `selectNavSections` MBA:1733) and `MBA.rebuildYouRows` MBA:1040 (everything else is listed under You) | LIVE | Which feeds appear in the bottom bar and the You tab. | Applies at once. Turning off the section you are on jumps to the nearest one (BP:762). The bottom bar holds only those four fixed sections; the rest can only be listed in You. News has no mapping when the country is RU/BY (BP:327), so its row does nothing there. Blocked Channels switches itself on with the first blocked channel. Overlaps the long-press "Unpin from You". |
+| Home, Trending, Kids, Sports, Live, Gaming, News, Music, Channels, Subscriptions, History, Downloads, Blocked Channels, Playlists, My videos, Playback queue, and Shorts when Show Shorts is on (Notifications is removed by `SS.getDefaultSections` on the phone; Settings by GSP:109) | `SidebarService#isSectionPinned` / `BrowsePresenter#enableSection` -> `SidebarService#enableSection` (BP:759, SS:94) | All on except Notifications, Playback queue, Trending, Blocked Channels (SS:295-304). Downloads is switched on once for older installs (MMA `downloads_section`) | `BP.initPinnedSections` BP:366 -> `refreshSections` -> `MBA.addSection/removeSection` -> `MBA.rebuildBottomNav` MBA:1617 (Home/Subscriptions/History/Downloads become tabs, `selectNavSections` MBA:1733) and `MBA.rebuildYouRows` MBA:1040 (everything else is listed under You) | LIVE | Which feeds appear in the bottom bar and the You tab. | Applies at once. Turning off the section you are on jumps to the nearest one (BP:762). The bottom bar holds only those four fixed sections; the rest can only be listed in You. News has no mapping when the country is RU/BY (BP:327), so its row does nothing there. Blocked Channels switches itself on with the first blocked channel. Overlaps the long-press "Unpin from You". |
 
 ### 1c. "Context menu" (checkbox list), GSP:219, plus the "Position of …" reorder dialog (GSP:263)
 
@@ -133,8 +133,9 @@ section only) and the background-video row. None of these has a setting.
 
 Storage: `MediaServiceData#isContentHidden` / `#setContentHidden` (bitmask). Default mask =
 `SHORTS_SUBSCRIPTIONS | SHORTS_HISTORY | UPCOMING_HOME` (MediaServiceData.java:313), so only "Hide upcoming
-from Home" starts checked. All Shorts rows and the Notifications row are hidden on the phone (GSP:139, GSP:168).
-None of these rows has a side effect beyond the write; each applies on the next load.
+from Home" starts checked. The old Shorts and Notifications rows remain hidden on the phone (GSP:139, GSP:168).
+Enabling Show Shorts clears the stored Shorts hide bits so the service does not remove Shorts before the
+phone can display them; turning the switch off relies on the phone's list and autoplay filters.
 
 | Row | Getter/Setter | Default | Phone reader (file:line) | Verdict | What it does | Notes |
 |---|---|---|---|---|---|---|

@@ -582,7 +582,8 @@ public class MobileChannelUploadsActivity extends MobileActivity
                 mTitleView.setText(group.getTitle());
             }
 
-            List<Video> shown = ShortsFilter.withoutShorts(group.getVideos()); // NEWTUBE(shorts)
+                List<Video> shown = ShortsFilter.withoutShorts(group.getVideos(),
+                    com.newtube.mobile.ui.common.ShortsPrefs.showShorts(this)); // NEWTUBE(shorts)
             if (group.getAction() != VideoGroup.ACTION_REMOVE && group.getAction() != VideoGroup.ACTION_SYNC) {
                 mLastGroup = group;
                 mTopUp.onPageLanded((group.getVideos() != null ? group.getVideos().size() : 0)

@@ -902,8 +902,8 @@ public final class Video {
             }
         }
 
-        // NEWTUBE(shorts): no Shorts on the phone - autoplay never lands on one (ShortsAutoplay).
-        if (PhoneUi.isEnabled()) {
+        // NEWTUBE(shorts): the phone skips Shorts in autoplay only while Show Shorts is off.
+        if (PhoneUi.isEnabled() && !PhoneUi.isShowShortsEnabled()) {
             nextVideo = ShortsAutoplay.pick(nextVideo, metadata.getSuggestions(), videoId,
                     item -> VideoGroup.isChannelBlocked(Video.from(item)));
         }

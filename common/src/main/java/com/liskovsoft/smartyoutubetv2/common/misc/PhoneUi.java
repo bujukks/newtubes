@@ -9,6 +9,7 @@ package com.liskovsoft.smartyoutubetv2.common.misc;
  */
 public final class PhoneUi {
     private static volatile boolean sEnabled;
+    private static volatile boolean sShowShortsEnabled;
 
     private PhoneUi() {
     }
@@ -19,5 +20,13 @@ public final class PhoneUi {
 
     public static boolean isEnabled() {
         return sEnabled;
+    }
+
+    public static void setShowShortsEnabled(boolean enabled) {
+        sShowShortsEnabled = enabled;
+    }
+
+    public static boolean isShowShortsEnabled() {
+        return sShowShortsEnabled;
     }
 }

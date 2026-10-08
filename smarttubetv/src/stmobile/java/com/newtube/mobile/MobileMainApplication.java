@@ -687,6 +687,12 @@ public class MobileMainApplication extends MainApplication {
         // form - TV-only settings rows hidden, menus that close and confirm with a Snackbar, share
         // sheets instead of the TV "open with" chooser. TV never calls this (PhoneUi).
         com.liskovsoft.smartyoutubetv2.common.misc.PhoneUi.setEnabled(true);
+        boolean showShorts = com.newtube.mobile.ui.common.ShortsPrefs.showShorts(this);
+        com.liskovsoft.smartyoutubetv2.common.misc.PhoneUi.setShowShortsEnabled(showShorts);
+        if (showShorts) {
+            com.liskovsoft.youtubeapi.service.internal.MediaServiceData.instance()
+                .setContentHidden(com.liskovsoft.youtubeapi.service.internal.MediaServiceData.CONTENT_SHORTS_ALL, false);
+        }
 
         // NO NOTIFICATIONS (mobile-only): YouTube refuses the notification inbox to the TV sign-in
         // (HTTP 400 signed in and out, 2026-09-30), so the phone shows no Notifications section: not

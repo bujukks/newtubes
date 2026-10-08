@@ -110,9 +110,8 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
                 continue;
             }
 
-            // NEWTUBE(shorts): the phone has no Shorts - no section, and none in any list - so the
-            // row would do nothing there.
-            if (PhoneUi.isEnabled() && sectionId == MediaGroup.TYPE_SHORTS) {
+            // NEWTUBE(shorts): hide the section row on the phone only while Show Shorts is off.
+            if (PhoneUi.isEnabled() && !PhoneUi.isShowShortsEnabled() && sectionId == MediaGroup.TYPE_SHORTS) {
                 continue;
             }
 
@@ -309,12 +308,13 @@ public class GeneralSettingsPresenter extends BasePresenter<Void> {
 
         for (Entry<Integer, Integer> section : sections.entrySet()) {
             // NEWTUBE(settings): on the phone, only sections it can actually open at boot - the
-            // enabled ones, never Shorts (retired on the phone) or Settings (not a feed). The current
-            // pick stays listed even if hidden since, so the radio group never loses its checked row.
+            // enabled ones, never Settings (not a feed). Shorts is listed only when Show Shorts is
+            // on. The current pick stays listed even if hidden, so the radio group keeps its selection.
             int sectionId = section.getValue();
             boolean current = section.getValue().equals(mSidebarService.getBootSectionId());
-            if (PhoneUi.isEnabled() && !current && (sectionId == MediaGroup.TYPE_SHORTS
-                    || sectionId == MediaGroup.TYPE_SETTINGS || !mSidebarService.isSectionPinned(sectionId))) {
+            if (PhoneUi.isEnabled() && !current && ((sectionId == MediaGroup.TYPE_SHORTS
+                    && !PhoneUi.isShowShortsEnabled()) || sectionId == MediaGroup.TYPE_SETTINGS
+                    || !mSidebarService.isSectionPinned(sectionId))) {
                 continue;
             }
             options.add(
