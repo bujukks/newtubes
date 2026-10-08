@@ -4,20 +4,23 @@
 
 # NewTube
 
-### Built on SmartTube. Made for your phone.
+### An unofficial NewTube fork focused on optional Shorts support for phones.
 
-**SmartTube for phones**, unofficial: a YouTube client for Android phones and tablets, built on
-[SmartTube](https://github.com/yuliskov/SmartTube) by [@yuliskov](https://github.com/yuliskov).<br>
+This repository forks [NewTube](https://github.com/aleixrodriala/newtube) by
+[@aleixrodriala](https://github.com/aleixrodriala), itself built on
+[SmartTube](https://github.com/yuliskov/SmartTube) by [@yuliskov](https://github.com/yuliskov).
+Its focus is restoring optional Shorts support to the NewTube phone app.<br>
 Sign in with a code, keep it playing in the background, save videos for offline,
 and cast to SmartTube on your TV.
 
-[![Latest release](https://img.shields.io/github/v/release/aleixrodriala/newtube?style=flat-square&label=release&color=1E2A78)](https://github.com/aleixrodriala/newtube/releases/latest)
+[![Upstream NewTube release](https://img.shields.io/github/v/release/aleixrodriala/newtube?style=flat-square&label=upstream%20release&color=1E2A78)](https://github.com/aleixrodriala/newtube/releases/latest)
+[![Fork of NewTube](https://img.shields.io/badge/fork_of-NewTube-1E2A78?style=flat-square)](https://github.com/aleixrodriala/newtube)
 [![Android 7.0+](https://img.shields.io/badge/Android-7.0%2B-1E2A78?style=flat-square)](#download)
 [![License: MIT](https://img.shields.io/badge/license-MIT-1E2A78?style=flat-square)](LICENSE)
 [![Built on SmartTube](https://img.shields.io/badge/built_on-SmartTube-1E2A78?style=flat-square)](https://github.com/yuliskov/SmartTube)
 [![Discord](https://img.shields.io/badge/Discord-join-1E2A78?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/xu3v6euSHq)
 
-**[Website](https://newtube.org/) · [Download](#download) · [Features](#features) · [How sign-in works](#how-sign-in-works) · [FAQ](#faq) · [Translate](#translate) · [Credits](#built-on-smarttube)**
+**[Upstream website](https://newtube.org/) · [Upstream download](#download) · [Features](#features) · [How sign-in works](#how-sign-in-works) · [FAQ](#faq) · [Upstream translations](#translate) · [Fork and credits](#fork-and-credits)**
 
 <br>
 
@@ -26,11 +29,10 @@ and cast to SmartTube on your TV.
 </div>
 
 > [!NOTE]
-> **NewTube is SmartTube's work underneath.** The engine that talks to YouTube, the account
-> sign-in and the SponsorBlock, DeArrow and Return YouTube Dislike integrations all come from
-> [SmartTube](https://github.com/yuliskov/SmartTube). NewTube adds a touch interface, its own
-> player and offline saving. It is an independent project, not endorsed by SmartTube's developer.
-> NewTube takes no donations: if you find it useful, [support SmartTube](https://github.com/yuliskov/SmartTube#donation).
+> **This is a fork, not the upstream NewTube project.** NewTube's phone app and this fork's
+> underlying YouTube engine, account sign-in, and integrations are credited to their upstream
+> authors below. This fork is independently maintained and is not affiliated with or endorsed by
+> NewTube's maintainers, SmartTube's developer, Google, or YouTube.
 
 ## Features
 
@@ -72,9 +74,11 @@ in light or dark.
 <tr>
 <td valign="top">
 
-#### Less noise
+#### Shorts, if you want them
 **SponsorBlock** skips sponsor segments, **DeArrow** swaps clickbait titles and thumbnails,
-and **Return YouTube Dislike** shows estimated dislike counts. There are no Shorts.
+and **Return YouTube Dislike** shows estimated dislike counts. Shorts are hidden by default; turn
+on **Show Shorts** in Settings → Tabs and feeds to include them in feeds, search, channels,
+playlists, Up next, and autoplay.
 
 </td>
 <td valign="top">
@@ -116,6 +120,9 @@ YouTube app.
 
 <a href="https://github.com/aleixrodriala/newtube/releases/latest"><img src="images/badge_github.png" height="64" alt="Get it on GitHub"></a>
 
+The release link above is for upstream NewTube; those APKs do not include this fork's Shorts
+changes. [Build this repository](docs/BUILDING.md) to use its changes.
+
 | Your device | File |
 |:--|:--|
 | Almost every phone from the last ~8 years | `NewTube_<version>_arm64-v8a.apk` |
@@ -125,13 +132,13 @@ YouTube app.
 
 - **Requires Android 7.0 or newer.** NewTube has its own package name
   (`io.github.aleixrodriala.arc`), so it installs next to SmartTube or the YouTube app.
-- **Updates:** with [Obtainium](https://obtainium.imranr.dev), choose *Add app* and paste
+- **Upstream NewTube updates:** with [Obtainium](https://obtainium.imranr.dev), choose *Add app* and paste
   `https://github.com/aleixrodriala/newtube`, or install a newer APK over the old one. NewTube
   also checks for new versions itself and offers them in the app.
-- **Verify what you install.** Every APK is signed with the same key. Its certificate SHA-256 is
+- **Verify upstream APKs.** Those APKs are signed with the same key. The upstream certificate SHA-256 is
   `2e:f9:9d:76:ed:fa:d9:88:ad:17:cd:ee:8b:a1:8c:63:4e:23:0f:e1:e3:cb:1f:dc:6c:db:02:49:37:0a:36:c9`.
   Check it with `apksigner verify --print-certs <file>.apk`. Each release also lists a SHA-256 for every file.
-  From 1.10.3 the APKs are built by GitHub Actions from the tagged source; check that with
+  From upstream NewTube 1.10.3, APKs are built by GitHub Actions from the tagged source; check that with
   `gh attestation verify <file>.apk -R aleixrodriala/newtube`.
   NewTube's key is not SmartTube's, so neither app can update the other.
 - **Distributed on GitHub**, not on Google Play.
@@ -150,7 +157,7 @@ stored on your phone and never sent to the developer. You can revoke it at any t
 
 ## How fast
 
-Medians measured on a Pixel 9 on 25 and 26 September 2026, with release builds of the code that
+Upstream NewTube medians measured on a Pixel 9 on 25 and 26 September 2026, with release builds of the code that
 became 1.10.1, 2 to 8 runs per cell: small samples, one phone, one carrier, and the mobile-data runs
 were on different days. Later versions haven't been re-timed this way, and 1.12.0 changed how the
 app opens (Home shows loading placeholders first). The method and the full table are in
@@ -221,8 +228,8 @@ fork of SmartTube, worth comparing. The two are separate projects. One differenc
 <details>
 <summary><b>Is it safe? How do I know the APK is really NewTube?</b></summary>
 
-Up to 1.10.2 the APKs were built on the maintainer's computer. From 1.10.3 they're built by
-GitHub Actions from the tagged source, and each file has a build attestation you can check with
+Upstream NewTube APKs up to 1.10.2 were built on its maintainer's computer. From upstream 1.10.3
+they're built by GitHub Actions from the tagged source, and each file has a build attestation you can check with
 `gh attestation verify <file>.apk -R aleixrodriala/newtube`. The builds aren't reproducible yet. Check the signing
 certificate against the fingerprint under [Download](#download), and each file against the
 SHA-256 in its release notes. Every release is tagged, so you can read the exact source.
@@ -237,7 +244,7 @@ in [PRIVACY.md](PRIVACY.md). Every check, with links, is also on the website und
 <details>
 <summary><b>Was this made with AI?</b></summary>
 
-Yes, in large part. NewTube is one person's project, and most of its own code (the phone
+Yes, in large part. Upstream NewTube is one person's project, and most of its own code (the phone
 interface, the player and the network work) was written with AI coding assistants (Claude and
 Codex); the commit trailers say so. The maintainer directs and reviews that work and uses the app
 daily. Each [release record](docs/releases/) lists what was checked on a real phone, what only in
@@ -258,15 +265,21 @@ something back, [support SmartTube](https://github.com/yuliskov/SmartTube#donati
 <summary><b>A video won't play. What now?</b></summary>
 
 YouTube sometimes refuses a video or an account. NewTube retries through other routes, but not
-every video comes back. If one keeps failing, [open an issue](https://github.com/aleixrodriala/newtube/issues/new/choose)
-with the video link and your NewTube version.
+every video comes back. For an issue with this fork, [open an issue](https://github.com/bujukks/newtubes/issues/new/choose)
+with the video link and your app version. For upstream NewTube, use its [issue tracker](https://github.com/aleixrodriala/newtube/issues/new/choose).
 
 </details>
 
-## Built on SmartTube
+## Fork and credits
+
+This project is based on [NewTube](https://github.com/aleixrodriala/newtube), created by
+[@aleixrodriala](https://github.com/aleixrodriala). NewTube is itself an unofficial phone fork
+of SmartTube. This repository retains the upstream MIT license and notices; its focus is the
+optional Shorts support described above.
 
 | Project | By | Used for |
 |:--|:--|:--|
+| [NewTube](https://github.com/aleixrodriala/newtube) | [@aleixrodriala](https://github.com/aleixrodriala) and contributors | Upstream phone app and the base for this fork |
 | [SmartTube](https://github.com/yuliskov/SmartTube) | [@yuliskov](https://github.com/yuliskov) and contributors | The engine, accounts and integrations: everything under the hood |
 | [SponsorBlock](https://sponsor.ajay.app) · [DeArrow](https://dearrow.ajay.app) | Ajay Ramachandran and contributors | Segment and title data (CC BY-NC-SA 4.0) |
 | [Return YouTube Dislike](https://returnyoutubedislike.com) | RYD contributors | Dislike counts |
@@ -277,25 +290,28 @@ SmartTube's original README is kept at [docs/UPSTREAM_README_SmartTube.md](docs/
 
 ## Translate
 
-NewTube's phone screens are in English and Spanish so far. You can translate them in your browser
+Upstream NewTube's phone screens are in English and Spanish so far. You can translate them in your browser
 on **[Weblate](https://hosted.weblate.org/projects/newtube/)** (WEBLATE-URL-PLACEHOLDER: the
 project page goes live once it is approved), with no coding and no GitHub account needed. The
 settings and messages inherited from SmartTube already exist in about 45 languages and just need
-their gaps filled. Weblate sends the translations here as pull requests, and each one ships in the
-next release. How it works and what to translate first: [TRANSLATING.md](TRANSLATING.md).
+their gaps filled. Upstream Weblate contributions go to NewTube and do not automatically update
+this fork. Changes for this fork can be sent as pull requests. How upstream translations work and
+what to translate first: [TRANSLATING.md](TRANSLATING.md).
 
 ## Building and contributing
 
-New releases, help and ideas are on the [NewTube Discord](https://discord.gg/xu3v6euSHq).
+New releases, help and ideas for upstream NewTube are on the
+[NewTube Discord](https://discord.gg/xu3v6euSHq).
 Issues and pull requests are welcome. Build instructions are in [docs/BUILDING.md](docs/BUILDING.md).
 The [changelog](CHANGELOG.md) covers every release, with a
 [Spanish edition](CHANGELOG.es.md) for the testers.
 
 ## License
 
-[MIT](LICENSE), the same as SmartTube. © yuliskov (SmartTube) and NewTube contributors.
+[MIT](LICENSE), inherited through NewTube from SmartTube. Upstream copyright and third-party
+notices remain with their respective authors; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-## Star history
+## Upstream NewTube star history
 
 <a href="https://www.star-history.com/#aleixrodriala/newtube&Date">
   <picture>
@@ -307,6 +323,7 @@ The [changelog](CHANGELOG.md) covers every release, with a
 
 ---
 
-*NewTube is an independent, unofficial project. It is not affiliated with, funded, authorized or
-endorsed by Google LLC, YouTube, or SmartTube's developer, and it hosts no content. Save only what
-the law and the platform's terms allow you to. YouTube, Android and Google are trademarks of Google LLC.*
+*This is an unofficial fork of NewTube, which is itself independent. This repository is not
+affiliated with or endorsed by NewTube's maintainers, SmartTube's developer, Google LLC, or YouTube,
+and it hosts no content. Save only what the law and the platform's terms allow you to. YouTube,
+Android and Google are trademarks of Google LLC.*
